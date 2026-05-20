@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 export default function HowItWorks() {
   const router = useRouter();
 
-  const handleStart = () => {
-    router.push("/application");
+  const handleApplyClick = () => {
+    router.push("/ApplicationForm");
   };
 
   const steps = [
@@ -150,7 +150,7 @@ export default function HowItWorks() {
         {/* Bottom CTA Button */}
         <div className="flex justify-center mt-16 md:mt-20">
           <button
-            onClick={handleStart}
+            onClick={handleApplyClick}
             className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#3a9688] hover:bg-[#2e7a6e] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
           >
             Start Your Application

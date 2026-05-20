@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 
 export default function Eligibility() {
   const router = useRouter();
+
   const handleApplyClick = () => {
-    router.push("/application");
+    router.push("/ApplicationForm");
   };
 
   const requirements = [
@@ -65,7 +66,10 @@ export default function Eligibility() {
 
         {/* Bottom CTA Button */}
         <div className="flex justify-center mt-12 md:mt-14">
-          <button className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#3a9688] hover:bg-[#2e7a6e] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group">
+          <button
+            onClick={handleApplyClick}
+            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#3a9688] hover:bg-[#2e7a6e] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
+          >
             Check Eligibility & Apply
             <svg
               className="w-5 h-5 transform group-hover:translate-x-0.5 transition-transform"
