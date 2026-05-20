@@ -7,7 +7,7 @@ export default function Hero() {
   const router = useRouter();
 
   const handleApplyClick = () => {
-    router.push("/application");
+    router.push("/ApplicationForm");
   };
 
   return (
@@ -72,7 +72,10 @@ export default function Hero() {
               </svg>
             </button>
 
-            <button onClick={() => router.push("/#work")} className="inline-flex items-center justify-center px-7 py-3.5 rounded-full bg-white/90 hover:bg-white text-[#2a8577] border border-white hover:border-gray-200 font-semibold text-base shadow-sm backdrop-blur-sm transition-all duration-200">
+            <button
+              onClick={() => router.push("/#work")}
+              className="inline-flex items-center justify-center px-7 py-3.5 rounded-full bg-white/90 hover:bg-white text-[#2a8577] border border-white hover:border-gray-200 font-semibold text-base shadow-sm backdrop-blur-sm transition-all duration-200"
+            >
               How It Works
             </button>
           </div>
