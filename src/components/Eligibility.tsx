@@ -37,7 +37,7 @@ export default function Eligibility() {
           {requirements.map((req, index) => (
             <div
               key={index}
-              className="bg-[#c3e1fa] rounded-xl px-5 py-4 flex items-center gap-4 border border-[#e8f2f0]/50 transition-colors duration-200 hover:bg-[#edf5f3]"
+              className="bg-[#d2ebff]/50 rounded-xl px-5 py-4 flex items-center gap-4 border border-[#e8f2f0]/50 transition-colors duration-200 hover:bg-[#d2ebff]"
             >
               {/* Custom Circular Check Icon Container */}
               <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#02335C]/10 border border-[#02335C]/20 flex items-center justify-center">
