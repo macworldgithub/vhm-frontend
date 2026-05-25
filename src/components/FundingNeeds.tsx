@@ -153,12 +153,14 @@ export default function FundingNeeds() {
               className="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 flex flex-col items-start"
             >
               {/* Icon Container */}
-              <div className="w-11 h-11 rounded-xl bg-gray-50 flex items-center justify-center mb-4 border border-gray-100/50">
-                {need.icon}
+              <div className="w-11 h-11 rounded-xl bg-[#02335C]/10 flex items-center justify-center mb-4 border border-[#02335C]/20">
+                {React.cloneElement(need.icon as any, {
+                  className: "w-6 h-6 text-[#02335C]",
+                })}
               </div>
 
               {/* Need Title */}
-              <h3 className="text-lg font-bold text-[#0f2942] mb-2">
+              <h3 className="text-lg font-bold text-[#02335C] mb-2">
                 {need.title}
               </h3>
 

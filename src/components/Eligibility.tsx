@@ -37,12 +37,12 @@ export default function Eligibility() {
           {requirements.map((req, index) => (
             <div
               key={index}
-              className="bg-[#f4f8f7] rounded-xl px-5 py-4 flex items-center gap-4 border border-[#e8f2f0]/50 transition-colors duration-200 hover:bg-[#edf5f3]"
+              className="bg-[#c3e1fa] rounded-xl px-5 py-4 flex items-center gap-4 border border-[#e8f2f0]/50 transition-colors duration-200 hover:bg-[#edf5f3]"
             >
               {/* Custom Circular Check Icon Container */}
-              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#3a9688]/10 border border-[#3a9688]/20 flex items-center justify-center">
+              <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#02335C]/10 border border-[#02335C]/20 flex items-center justify-center">
                 <svg
-                  className="w-3.5 h-3.5 text-[#3a9688]"
+                  className="w-3.5 h-3.5 text-[#02335C]"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="3"
@@ -68,7 +68,7 @@ export default function Eligibility() {
         <div className="flex justify-center mt-12 md:mt-14">
           <button
             onClick={handleApplyClick}
-            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#3a9688] hover:bg-[#2e7a6e] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
+            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full bg-[#02335C] hover:bg-[#02335C] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
           >
             Check Eligibility & Apply
             <svg

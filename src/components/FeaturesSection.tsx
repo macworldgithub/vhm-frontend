@@ -8,7 +8,7 @@ export default function FeaturesSection() {
         "Enter your ABN and we auto-populate your business details from the Australian Business Register in real time.",
       icon: (
         <svg
-          className="w-5 h-5 text-[#2a8577]"
+          className="w-5 h-5 text-[#02335C]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -28,7 +28,7 @@ export default function FeaturesSection() {
         "Our AI matches your profile against our lender panel and submits to the best-fit lender — often with same-day approval.",
       icon: (
         <svg
-          className="w-5 h-5 text-[#2a8577]"
+          className="w-5 h-5 text-[#02335C]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -48,7 +48,7 @@ export default function FeaturesSection() {
         "Bank-grade encryption, privacy consent workflows, and full compliance with Australian lending regulations.",
       icon: (
         <svg
-          className="w-5 h-5 text-[#2a8577]"
+          className="w-5 h-5 text-[#02335C]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -68,7 +68,7 @@ export default function FeaturesSection() {
         "Access multiple unsecured lenders through a single application. We find the best match for your business.",
       icon: (
         <svg
-          className="w-5 h-5 text-[#2a8577]"
+          className="w-5 h-5 text-[#02335C]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -88,7 +88,7 @@ export default function FeaturesSection() {
         "Track your application status in real time from submission through to approval and funding.",
       icon: (
         <svg
-          className="w-5 h-5 text-[#2a8577]"
+          className="w-5 h-5 text-[#02335C]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -108,7 +108,7 @@ export default function FeaturesSection() {
         "No paperwork, no branch visits. Complete your entire application online from any device.",
       icon: (
         <svg
-          className="w-5 h-5 text-[#2a8577]"
+          className="w-5 h-5 text-[#02335C]"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
@@ -130,7 +130,7 @@ export default function FeaturesSection() {
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#111827] leading-tight">
-            Why choose <span className="text-[#3a9688]">VHM</span> for business
+            Why choose <span className="text-[#02335C]">VHM</span> for business
             finance?
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#6b7280] font-normal leading-relaxed">

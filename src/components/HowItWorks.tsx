@@ -112,7 +112,7 @@ export default function HowItWorks() {
         {/* Steps Flex/Grid Container */}
         <div className="relative flex flex-col lg:flex-row justify-between items-center lg:items-start gap-12 lg:gap-6 w-full">
           {/* Desktop Horizontal Connecting Line */}
-          <div className="absolute top-8 left-[10%] right-[10%] h-[1px] border-t border-dashed border-[#b3d7d2] hidden lg:block z-0" />
+          <div className="absolute top-8 left-4 right-4 lg:left-[10%] lg:right-[10%] h-[1px] border-t border-dashed border-[#b3d7d2] hidden lg:block z-0" />
 
           {steps.map((step, index) => (
             <div
@@ -121,16 +121,16 @@ export default function HowItWorks() {
             >
               {/* Mobile/Tablet Vertical Connecting Line */}
               {index !== steps.length - 1 && (
-                <div className="absolute top-16 bottom-[-48px] w-[1px] border-l border-dashed border-[#b3d7d2] lg:hidden z-0" />
+                <div className="absolute top-16 bottom-[-48px] md:bottom-[-36px] w-[1px] border-l border-dashed border-[#b3d7d2] lg:hidden z-0" />
               )}
 
               {/* Icon Container */}
-              <div className="w-16 h-16 rounded-2xl bg-[#3a9688] flex items-center justify-center shadow-md mb-4 transform transition-transform duration-300 group-hover:scale-105">
+              <div className="w-16 h-16 rounded-2xl bg-[#02335C] flex items-center justify-center shadow-md mb-4 transform transition-transform duration-300 group-hover:scale-105">
                 {step.icon}
               </div>
 
               {/* Step Label */}
-              <span className="text-[11px] sm:text-12px font-bold text-[#3a9688] tracking-widest uppercase mb-2">
+              <span className="text-[11px] sm:text-12px font-bold text-[#02335C] tracking-widest uppercase mb-2">
                 {step.stepNumber}
               </span>
 
@@ -151,7 +151,7 @@ export default function HowItWorks() {
         <div className="flex justify-center mt-16 md:mt-20">
           <button
             onClick={handleApplyClick}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#3a9688] hover:bg-[#2e7a6e] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-[#02335C] hover:bg-[#02335C] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
           >
             Start Your Application
             <svg

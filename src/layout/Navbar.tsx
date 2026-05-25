@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
   const router = useRouter();
@@ -36,13 +37,16 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <img
+            <Image
               src="/images/vhm-logo.png"
-              className="h-9 w-auto"
+              className="h-16 w-auto object-contain"
               alt="VHM Logo"
+              width={144}
+              height={56}
+              style={{ width: "auto" }}
             />
           </div>
 
@@ -50,12 +54,12 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-8 text-gray-400 font-semibold tracking-wide">
             <a
               href="#feature"
-              className="hover:text-teal-600 transition-colors"
+              className="hover:text-[#02335C] transition-colors"
             >
               Benefits
             </a>
 
-            <a href="#work" className="hover:text-teal-600 transition-colors">
+            <a href="#work" className="hover:text-[#02335C] transition-colors">
               How It Works
             </a>
           </nav>
@@ -64,7 +68,7 @@ export default function Navbar() {
           <div className="hidden md:block">
             <button
               onClick={handleApplyClick}
-              className="inline-flex items-center justify-center gap-2 px-8 py-2 rounded-full bg-[#3a9688] hover:bg-[#2e7a6e] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
+              className="inline-flex items-center justify-center gap-2 px-8 py-2 rounded-full bg-[#02335C] hover:bg-[#02335C] text-white font-medium text-base md:text-lg shadow-md shadow-teal-900/10 transition-colors duration-200 group"
             >
               Apply Now <span className="text-lg leading-none">→</span>
             </button>
@@ -84,14 +88,14 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden border-t bg-white px-4 py-4 space-y-4 shadow-xl animate-in fade-in slide-in-from-top-5 duration-200">
           <a
-            className="block font-medium text-gray-800 px-2 py-1 hover:text-teal-600"
+            className="block font-medium text-gray-800 px-2 py-1 hover:text-[#02335C]"
             href="#feature"
           >
             Benefits
           </a>
 
           <a
-            className="block font-medium text-gray-800 px-2 py-1 hover:text-teal-600"
+            className="block font-medium text-gray-800 px-2 py-1 hover:text-[#02335C]"
             href="#work"
           >
             How It Works
@@ -99,7 +103,7 @@ export default function Navbar() {
 
           <button
             onClick={handleApplyClick}
-            className="w-full bg-[#2a8577] text-white py-3 rounded-full font-medium shadow-sm"
+            className="w-full bg-[#02335C] text-white py-3 rounded-full font-medium shadow-sm"
           >
             Apply Now
           </button>

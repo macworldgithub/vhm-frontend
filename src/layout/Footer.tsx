@@ -1,12 +1,21 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
-    <footer className="bg-[#0b1623] text-gray-300 mt-10">
+    <footer className="bg-[#0b1623] text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Left Section */}
           <div>
-            <img src="/images/vhm-logo.png" className="h-10 mb-4" />
+            <Image
+              src="/images/vhm-logo.png"
+              alt="VHM Logo"
+              width={160}
+              height={40}
+              className="h-16 w-auto object-contain mb-4"
+              style={{ width: "auto" }}
+            />
 
             <p className="text-sm leading-6 text-gray-400">
               VHM Finance Partners – Not Bigger. Better. Providing expert
