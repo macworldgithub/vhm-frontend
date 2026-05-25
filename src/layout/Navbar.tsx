@@ -10,7 +10,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
 
   const handleApplyClick = () => {
-    router.push("/ApplicationForm");
+    router.push("/application");
   };
 
   // Scroll detect karne ke liye effect

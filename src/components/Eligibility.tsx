@@ -7,7 +7,7 @@ export default function Eligibility() {
   const router = useRouter();
 
   const handleApplyClick = () => {
-    router.push("/ApplicationForm");
+    router.push("/application");
   };
 
   const requirements = [

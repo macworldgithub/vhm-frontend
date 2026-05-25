@@ -7,7 +7,7 @@ export default function Hero() {
   const router = useRouter();
 
   const handleApplyClick = () => {
-    router.push("/ApplicationForm");
+    router.push("/application");
   };
 
   return (

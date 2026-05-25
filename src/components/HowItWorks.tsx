@@ -6,7 +6,7 @@ export default function HowItWorks() {
   const router = useRouter();
 
   const handleApplyClick = () => {
-    router.push("/ApplicationForm");
+    router.push("/application");
   };
 
   const steps = [
