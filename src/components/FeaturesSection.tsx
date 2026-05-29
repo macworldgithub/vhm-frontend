@@ -130,8 +130,8 @@ export default function FeaturesSection() {
         {/* Header Section */}
         <div className="text-center max-w-3xl mx-auto mb-12 md:mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#111827] leading-tight">
-            Why choose <span className="text-[#02335C]">VHM</span> for business
-            finance?
+            Why choose <span className="text-[#02335C]">KREDO</span> for
+            business finance?
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#6b7280] font-normal leading-relaxed">
             We combine expert financial advice with cutting-edge AI technology

@@ -18,7 +18,7 @@ export default function Footer() {
             />
 
             <p className="text-sm leading-6 text-gray-400">
-              VHM Finance Partners – Not Bigger. Better. Providing expert
+              KREDO Finance Partners – Not Bigger. Better. Providing expert
               financial advice and fast business lending solutions powered by AI
               technology.
             </p>
@@ -36,7 +36,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#" className="hover:text-white">
-                  VHM Finance Partners
+                  Kredo Finance Partners
                 </a>
               </li>
               <li>
@@ -53,8 +53,8 @@ export default function Footer() {
 
             <div className="space-y-3 text-sm">
               <p>📞 02 9993 7020</p>
-              <p>✉️ adviser@vhmfinancepartners.com.au</p>
-              <p>🌐 vhmfinancepartners.com.au</p>
+              <p>✉️ adviser@kredofinancepartners.com.au</p>
+              <p>🌐 kredofinancepartners.com.au</p>
             </div>
           </div>
         </div>
@@ -62,8 +62,8 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="mt-10 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between text-sm text-gray-500 gap-3">
           <p>
-            VHM Finance Partners Pty Ltd. Australian Credit Licence holder. All
-            rights reserved.
+            KREDO Finance Partners Pty Ltd. Australian Credit Licence holder.
+            All rights reserved.
           </p>
 
           <p>Powered by Bele.ai • 2026</p>
