@@ -529,7 +529,7 @@ export default function Application() {
                       Privacy Collection Statement
                     </p>
                     <p className="mt-2">
-                      VHM Finance Partners Pty Ltd collects your personal
+                      KREDO Finance Partners Pty Ltd collects your personal
                       information for the purpose of assessing your eligibility
                       for unsecured business finance products from our panel of
                       lenders.
@@ -564,8 +564,9 @@ export default function Application() {
                         Statement
                       </div>
                       <div className="text-xs text-[#9ca3af]">
-                        I consent to VHM Finance Partners collecting, using, and
-                        disclosing my personal information as described above.
+                        I consent to KREDO Finance Partners collecting, using,
+                        and disclosing my personal information as described
+                        above.
                       </div>
                     </div>
                   </label>
@@ -647,7 +648,7 @@ export default function Application() {
                       review on Google.
                     </p>
                     <a
-                      href="https://www.google.com/maps/place/VHM+Finance+Partners/@-33.8568,151.2153,17z"
+                      href="https://www.google.com/maps/place/KREDO+Finance+Partners/@-33.8568,151.2153,17z"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 rounded-xl bg-[#4285F4] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#3367D6]"
