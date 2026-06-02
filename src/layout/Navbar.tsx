@@ -41,7 +41,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex items-center gap-2">
             <Image
-              src="/images/vhm-logo.png"
+              src="/images/logo.png"
               className="h-16 w-auto object-contain"
               alt="VHM Logo"
               width={144}
