@@ -711,19 +711,19 @@ export default function Application() {
                           </div>
                           <div className="mb-1">
                             <span className="font-medium">Entity:</span>{" "}
-                            {businessData.entityType}
+                            {businessData?.EntityTypeName ?? "-"}
                           </div>
                         </div>
                         <div className="md:text-right">
                           <div className="mb-1">
                             <span className="font-medium">Business:</span>{" "}
                             <span className="font-semibold">
-                              {businessData.businessName}
+                              {businessData?.EntityName ?? "-"}
                             </span>
                           </div>
                           <div className="mb-1">
                             <span className="font-medium">GST:</span>{" "}
-                            {businessData.gst}
+                            {businessData?.Gst ? "Yes" : "No"}
                           </div>
                         </div>
                       </div>
