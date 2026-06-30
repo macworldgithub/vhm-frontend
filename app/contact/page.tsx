@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Navbar from "@/src/layout/Navbar";
 import Footer from "@/src/layout/Footer";
 import {
@@ -23,6 +24,7 @@ interface FormState {
 type Status = "idle" | "loading" | "success" | "error";
 
 export default function Contact() {
+  const router = useRouter();
   const [form, setForm] = useState<FormState>({
     fullName: "",
     email: "",
@@ -168,7 +170,7 @@ export default function Contact() {
                       required
                       value={form.fullName}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors text-black placeholder-gray-500"
                       placeholder="John Doe"
                     />
                   </div>
@@ -208,7 +210,7 @@ export default function Contact() {
                       name="phone"
                       value={form.phone}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors text-black placeholder-gray-500"
                       placeholder="0400 000 000"
                     />
                   </div>
@@ -227,7 +229,7 @@ export default function Contact() {
                       required
                       value={form.message}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors resize-none"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors resize-none text-black placeholder-gray-500"
                       placeholder="How can we help you?"
                     />
                   </div>
@@ -253,6 +255,16 @@ export default function Contact() {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Back Button */}
+        <div className="max-w-4xl mx-auto mt-8">
+          <button
+            onClick={() => router.push("/")}
+            className="bg-[#02335C] hover:bg-[#0B1623] text-white font-medium py-2 px-6 rounded-lg transition-colors"
+          >
+            Back To Home
+          </button>
         </div>
       </main>
       <Footer />
