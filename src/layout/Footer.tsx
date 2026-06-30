@@ -17,11 +17,14 @@ export default function Footer() {
               style={{ width: "auto" }}
             />
 
-            <p className="text-sm leading-6 text-gray-400">
-              KREDO Finance Partners – Not Bigger. Better. Providing expert
-              financial advice and fast business lending solutions powered by AI
-              technology.
-            </p>
+            <div className="space-y-2">
+              <p className="text-sm font-semibold text-white">
+                Kredo – Backing business is our Kredo.
+              </p>
+              <p className="text-sm leading-6 text-gray-400">
+                Providing expert business cashflow solutions powered by over 100 years combined broker experience and supported by the latest AI technology.
+              </p>
+            </div>
           </div>
 
           {/* Quick Links */}
@@ -30,18 +33,18 @@ export default function Footer() {
 
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="/application" className="hover:text-white">
                   Apply for Finance
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
-                  Kredo Finance Partners
+                <a href="/about" className="hover:text-white">
+                  About Us
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
-                  About Us
+                <a href="/contact" className="hover:text-white">
+                  Contact Us
                 </a>
               </li>
             </ul>
@@ -52,21 +55,31 @@ export default function Footer() {
             <h3 className="text-white font-semibold mb-4">CONTACT</h3>
 
             <div className="space-y-3 text-sm">
-              <p>📞 02 9993 7020</p>
-              <p>✉️ adviser@kredofinancepartners.com.au</p>
-              <p>🌐 kredofinancepartners.com.au</p>
+              <p>📞 0400 212 777</p>
+              <p>
+                ✉️ <a className="hover:text-white hover:underline transition-colors">asset@vhmpartners.com.au</a>
+              </p>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-10 border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between text-sm text-gray-500 gap-3">
+        <div className="mt-4 border-t border-gray-700 pt-4 flex flex-col md:flex-row justify-between text-sm text-gray-500 gap-3">
           <p>
-            KREDO Finance Partners Pty Ltd. Australian Credit Licence holder.
-            All rights reserved.
+            © {new Date().getFullYear()} Kredo. All rights reserved.
           </p>
 
           <p>Powered by Bele.ai • 2026</p>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mt-6 pt-8 text-xs text-gray-500 text-center space-y-3">
+          <h3 className="text-white text-bold">Disclaimer</h3>
+          <p>VHM Asset Finance ABN 96 661 380 150 trading as Kredo</p>
+          <p>VHM Asset Finance Credit Representative 542867 is authorised under Australian Credit Licence 389328.</p>
+          <p className="leading-relaxed text-left md:text-center">
+            This page provides general information only and has been prepared without taking into account your objectives, financial situation or needs. We recommend that you consider whether it is appropriate for your circumstances and your full financial situation will need to be reviewed prior to acceptance of any offer or product. It does not constitute legal, tax or financial advice and you should always seek professional advice in relation to your individual circumstances.
+          </p>
         </div>
       </div>
     </footer>
