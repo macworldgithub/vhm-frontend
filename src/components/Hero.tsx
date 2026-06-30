@@ -59,7 +59,7 @@ export default function Hero() {
 
           {/* Description Paragraph */}
           <p className="text-base sm:text-lg text-slate-900 leading-relaxed max-w-lg md:max-w-xl font-bold">
-            Access unsecured business loans from $5,000 to $500,000. Our
+            Access unsecured business loans from $5,000 to $2,000,000. Our
             AI-powered platform matches you with the right lender in minutes —
             not days.
           </p>

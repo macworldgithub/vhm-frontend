@@ -43,6 +43,9 @@ export default function Application() {
   const [idFileName, setIdFileName] = useState<string>("");
   const [privacyConsent, setPrivacyConsent] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [businessData, setBusinessData] = useState<any>(null);
 
   const addDirector = () =>
     setDirectors((d) => [
@@ -71,26 +74,40 @@ export default function Application() {
     { id: 1, title: "Business", icon: Briefcase },
     { id: 2, title: "Directors", icon: Users },
     { id: 3, title: "Funding", icon: CreditCard },
-    { id: 4, title: "Documents", icon: FileText },
-    { id: 5, title: "Privacy", icon: ShieldCheck },
+    // { id: 4, title: "Documents", icon: FileText },
+    // { id: 5, title: "Privacy", icon: ShieldCheck },
     { id: 6, title: "Submit", icon: Send },
   ];
 
-  const businessData = {
-    businessName: "AUSTRALIAN TAXATION OFFICE",
-    entityType: "Commonwealth Government Entity",
-    status: "Active",
-    gst: "Yes",
-    registrationDate: "1999-11-01",
-    location: "NSW 2640",
-  };
-
   const router = useRouter();
 
-  const handleVerify = () => {
-    if (abn.length > 5) setVerified(true);
-  };
+  const handleVerify = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      setVerified(false);
 
+      const cleanAbn = abn.replace(/\s/g, "");
+
+      const response = await fetch(
+        `https://www.abn.omnisuiteai.com/api/abn/${cleanAbn}/json`,
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result?.message || "Unable to verify ABN");
+      }
+
+      setBusinessData(result.data);
+      setVerified(true);
+    } catch (err: any) {
+      setError(err.message || "ABN verification failed");
+      setVerified(false);
+    } finally {
+      setLoading(false);
+    }
+  };
   const formatCurrency = (val: string) => {
     if (!val) return "-";
     const n = Number(String(val).replace(/[^0-9.-]+/g, ""));
@@ -157,11 +174,11 @@ export default function Application() {
                     Enter your ABN to auto-populate your business information.
                   </p>
                 </div>
-
                 <div className="mb-7">
                   <label className="mb-2 block text-sm font-semibold text-[#111827]">
                     Australian Business Number (ABN)
                   </label>
+
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <input
                       type="text"
@@ -170,14 +187,21 @@ export default function Application() {
                       placeholder="e.g. 51 824 753 556"
                       className="h-12 w-full rounded-xl border border-[#d1d5db] px-4 text-sm text-[#111827] outline-none transition placeholder:text-[#9ca3af] focus:border-[#02335C] focus:ring-4 focus:ring-[#02335C]/10"
                     />
+
                     <button
                       onClick={handleVerify}
-                      className="flex h-12 min-w-30 items-center justify-center gap-2 rounded-xl bg-[#02335C] px-5 text-sm font-semibold text-white transition hover:bg-[#02335C]"
+                      disabled={loading}
+                      className="flex h-12 min-w-30 items-center justify-center gap-2 rounded-xl bg-[#02335C] px-5 text-sm font-semibold text-white"
                     >
                       <Search size={18} />
-                      Verify
+                      {loading ? "Verifying..." : "Verify"}
                     </button>
                   </div>
+
+                  {/* Error Message */}
+                  {error && (
+                    <p className="mt-2 text-sm text-red-600">{error}</p>
+                  )}
                 </div>
 
                 {verified && (
@@ -194,32 +218,28 @@ export default function Application() {
                           Business Name
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData.businessName}
-                        </div>
+                          {businessData?.EntityName}                        </div>
                       </div>
                       <div>
                         <p className="mb-1 text-sm font-medium text-[#64748b]">
                           Entity Type
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData.entityType}
-                        </div>
+                          {businessData?.EntityTypeName}                        </div>
                       </div>
                       <div>
                         <p className="mb-1 text-sm font-medium text-[#64748b]">
                           Status
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData.status}
-                        </div>
+                          {businessData?.AbnStatus}                        </div>
                       </div>
                       <div>
                         <p className="mb-1 text-sm font-medium text-[#64748b]">
                           GST Registered
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData.gst}
-                        </div>
+                          {businessData?.Gst ? "Yes" : "No"}                        </div>
                       </div>
                     </div>
                   </div>
@@ -412,7 +432,7 @@ export default function Application() {
                       />
                     </div>
                     <p className="mt-1 text-xs text-[#9ca3af]">
-                      Between $5,000 and $500,000
+                      Between $5,000 and $2,000,000
                     </p>
                   </div>
                   <div>
@@ -469,7 +489,7 @@ export default function Application() {
               </div>
             )}
 
-            {currentStep === 4 && (
+            {false && currentStep === 4 && (
               <div className="my-8">
                 <h2 className="mb-4 text-xl font-semibold text-[#0f172a]">
                   Supporting Documents
@@ -518,7 +538,7 @@ export default function Application() {
               </div>
             )}
 
-            {currentStep === 5 && (
+            {false && currentStep === 5 && (
               <div className="my-8">
                 <h2 className="mb-4 text-xl font-semibold text-[#0f172a]">
                   Privacy & Consent
@@ -794,7 +814,9 @@ export default function Application() {
                   </Link>
                 ) : (
                   <button
-                    onClick={() => setCurrentStep((s) => Math.max(1, s - 1))}
+                    onClick={() =>
+                      setCurrentStep((s) => Math.max(1, s === 6 ? 3 : s - 1))
+                    }
                     className="inline-flex items-center gap-2 text-sm font-medium text-[#64748b] transition hover:text-[#111827]"
                   >
                     <ArrowLeft size={18} />
@@ -804,7 +826,8 @@ export default function Application() {
 
               <button
                 onClick={() => {
-                  if (currentStep < 6) setCurrentStep((s) => s + 1);
+                  if (currentStep < 3) setCurrentStep((s) => s + 1);
+                  else if (currentStep === 3) setCurrentStep(6);
                   else if (!submitted) {
                     console.log("submit form", {
                       abn,
@@ -824,14 +847,19 @@ export default function Application() {
                     router.push("/");
                   }
                 }}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#02335C] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#02335C]"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#02335C] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#034a80]"
               >
                 {submitted ? (
                   "Back to Home"
                 ) : currentStep === 6 ? (
                   <>
                     <Send size={16} />
-                    Submit Application
+                    Confirm & Submit
+                  </>
+                ) : currentStep === 3 ? (
+                  <>
+                    <Send size={16} />
+                    Submit enquiry
                   </>
                 ) : (
                   <>

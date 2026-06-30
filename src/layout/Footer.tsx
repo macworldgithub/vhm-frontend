@@ -22,7 +22,9 @@ export default function Footer() {
                 Kredo – Backing business is our Kredo.
               </p>
               <p className="text-sm leading-6 text-gray-400">
-                Providing expert business cashflow solutions powered by over 100 years combined broker experience and supported by the latest AI technology.
+                Providing expert business cashflow solutions powered by over 100
+                years combined broker experience and supported by the latest AI
+                technology.
               </p>
             </div>
           </div>
@@ -57,7 +59,13 @@ export default function Footer() {
             <div className="space-y-3 text-sm">
               <p>📞 0400 212 777</p>
               <p>
-                ✉️ <a className="hover:text-white hover:underline transition-colors">asset@vhmpartners.com.au</a>
+                ✉️{" "}
+                <a
+                  href="/contact"
+                  className="hover:text-white hover:underline transition-colors"
+                >
+                  asset@vhmpartners.com.au
+                </a>
               </p>
             </div>
           </div>
@@ -65,9 +73,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-4 border-t border-gray-700 pt-4 flex flex-col md:flex-row justify-between text-sm text-gray-500 gap-3">
-          <p>
-            © {new Date().getFullYear()} Kredo. All rights reserved.
-          </p>
+          <p>© {new Date().getFullYear()} Kredo. All rights reserved.</p>
 
           <p>Powered by Bele.ai • 2026</p>
         </div>
@@ -76,9 +82,18 @@ export default function Footer() {
         <div className="mt-6 pt-8 text-xs text-gray-500 text-center space-y-3">
           <h3 className="text-white text-bold">Disclaimer</h3>
           <p>VHM Asset Finance ABN 96 661 380 150 trading as Kredo</p>
-          <p>VHM Asset Finance Credit Representative 542867 is authorised under Australian Credit Licence 389328.</p>
+          <p>
+            VHM Asset Finance Credit Representative 542867 is authorised under
+            Australian Credit Licence 389328.
+          </p>
           <p className="leading-relaxed text-left md:text-center">
-            This page provides general information only and has been prepared without taking into account your objectives, financial situation or needs. We recommend that you consider whether it is appropriate for your circumstances and your full financial situation will need to be reviewed prior to acceptance of any offer or product. It does not constitute legal, tax or financial advice and you should always seek professional advice in relation to your individual circumstances.
+            This page provides general information only and has been prepared
+            without taking into account your objectives, financial situation or
+            needs. We recommend that you consider whether it is appropriate for
+            your circumstances and your full financial situation will need to be
+            reviewed prior to acceptance of any offer or product. It does not
+            constitute legal, tax or financial advice and you should always seek
+            professional advice in relation to your individual circumstances.
           </p>
         </div>
       </div>
