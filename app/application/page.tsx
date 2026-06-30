@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,8 @@ import {
   FileText,
   ShieldCheck,
 } from "lucide-react";
+import TalkToSomeone from "@/src/components/TalkToSomeone";
+import UnsavedChangesModal from "@/src/components/UnsavedChangesModal";
 
 export default function Application() {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -46,6 +48,9 @@ export default function Application() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [businessData, setBusinessData] = useState<any>(null);
+  const [showUnsavedModal, setShowUnsavedModal] = useState<boolean>(false);
+  const [shouldExitApp, setShouldExitApp] = useState<boolean>(false);
+  const pendingNavigationRef = useRef<string | null>(null);
 
   const addDirector = () =>
     setDirectors((d) => [
@@ -80,6 +85,57 @@ export default function Application() {
   ];
 
   const router = useRouter();
+
+  // Detect unsaved changes
+  const hasUnsavedChanges =
+    (abn ||
+      background ||
+      loanAmount ||
+      fundPurpose ||
+      fundDetails ||
+      contactEmail ||
+      contactPhone ||
+      bankLink ||
+      idFileName ||
+      privacyConsent ||
+      directors.some((d) => d.firstName || d.lastName)) &&
+    !submitted;
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hasUnsavedChanges && !shouldExitApp) {
+        e.preventDefault();
+        e.returnValue = "";
+        setShowUnsavedModal(true);
+        return "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges, shouldExitApp]);
+
+  // Handle back button
+  useEffect(() => {
+    const handlePopState = () => {
+      if (hasUnsavedChanges && !shouldExitApp) {
+        setShowUnsavedModal(true);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [hasUnsavedChanges, shouldExitApp]);
+
+  const handleContinueExit = () => {
+    setShouldExitApp(true);
+    setShowUnsavedModal(false);
+    if (pendingNavigationRef.current) {
+      router.push(pendingNavigationRef.current);
+    } else {
+      router.back();
+    }
+  };
 
   const handleVerify = async () => {
     try {
@@ -876,6 +932,18 @@ export default function Application() {
           </div>
         </div>
       </main>
+
+      {/* Talk to Someone Widget */}
+      <TalkToSomeone phoneNumber="+61 1234 567 890" />
+
+      {/* Unsaved Changes Modal */}
+      <UnsavedChangesModal
+        isOpen={showUnsavedModal}
+        onClose={() => setShowUnsavedModal(false)}
+        onContinueExit={handleContinueExit}
+        onTalkToSomeone={() => setShowUnsavedModal(false)}
+        phoneNumber="+61 1234 567 890"
+      />
     </div>
   );
 }
