@@ -218,28 +218,32 @@ export default function Application() {
                           Business Name
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.EntityName}                        </div>
+                          {businessData?.EntityName}{" "}
+                        </div>
                       </div>
                       <div>
                         <p className="mb-1 text-sm font-medium text-[#64748b]">
                           Entity Type
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.EntityTypeName}                        </div>
+                          {businessData?.EntityTypeName}{" "}
+                        </div>
                       </div>
                       <div>
                         <p className="mb-1 text-sm font-medium text-[#64748b]">
                           Status
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.AbnStatus}                        </div>
+                          {businessData?.AbnStatus}{" "}
+                        </div>
                       </div>
                       <div>
                         <p className="mb-1 text-sm font-medium text-[#64748b]">
                           GST Registered
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.Gst ? "Yes" : "No"}                        </div>
+                          {businessData?.Gst ? "Yes" : "No"}{" "}
+                        </div>
                       </div>
                     </div>
                   </div>
