@@ -3,7 +3,15 @@
 import React, { useState } from "react";
 import Navbar from "@/src/layout/Navbar";
 import Footer from "@/src/layout/Footer";
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
 
 interface FormState {
   fullName: string;
@@ -25,7 +33,7 @@ export default function Contact() {
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     if (status === "error") setStatus("idle");
@@ -37,10 +45,7 @@ export default function Contact() {
     setErrorMsg("");
 
     try {
-      const apiBase =
-        process.env.NEXT_PUBLIC_API_URL ?? "";
-
-      const res = await fetch(`${apiBase}/api/contact`, {
+      const res = await fetch(`https://www.abn.omnisuiteai.com/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -58,14 +63,12 @@ export default function Contact() {
         setForm({ fullName: "", email: "", phone: "", message: "" });
       } else {
         setStatus("error");
-        setErrorMsg(
-          data.message ?? "Something went wrong. Please try again."
-        );
+        setErrorMsg(data.message ?? "Something went wrong. Please try again.");
       }
     } catch {
       setStatus("error");
       setErrorMsg(
-        "Could not connect to the server. Please check your connection and try again."
+        "Could not connect to the server. Please check your connection and try again.",
       );
     }
   };
@@ -76,14 +79,14 @@ export default function Contact() {
       <main className="min-h-screen bg-gray-50 py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-2">
-
             {/* ── Left: Contact Info ── */}
             <div className="bg-[#0b1623] p-10 text-white flex flex-col justify-between">
               <div>
                 <h1 className="text-3xl font-bold mb-4">Get in Touch</h1>
                 <p className="text-gray-400 mb-8 leading-relaxed">
-                  Have questions about our financial solutions? We&apos;re here to help.
-                  Reach out and our expert team will get back to you shortly.
+                  Have questions about our financial solutions? We&apos;re here
+                  to help. Reach out and our expert team will get back to you
+                  shortly.
                 </p>
 
                 <div className="space-y-6">
@@ -109,7 +112,9 @@ export default function Contact() {
               </div>
 
               <div className="mt-12">
-                <p className="text-sm text-gray-500">Kredo — VHM Asset Finance</p>
+                <p className="text-sm text-gray-500">
+                  Kredo — VHM Asset Finance
+                </p>
               </div>
             </div>
 
@@ -129,7 +134,8 @@ export default function Contact() {
                     Message Sent!
                   </h3>
                   <p className="text-sm text-gray-500 max-w-xs">
-                    Thanks for reaching out. We&apos;ll be in touch with you shortly.
+                    Thanks for reaching out. We&apos;ll be in touch with you
+                    shortly.
                   </p>
                   <button
                     onClick={() => setStatus("idle")}
@@ -140,7 +146,6 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-
                   {/* Error banner */}
                   {status === "error" && errorMsg && (
                     <div className="flex items-start gap-3 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -182,7 +187,7 @@ export default function Contact() {
                       required
                       value={form.email}
                       onChange={handleChange}
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors"
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#02335C]/20 focus:border-[#02335C] outline-none transition-colors text-black"
                       placeholder="john@example.com"
                     />
                   </div>
@@ -193,7 +198,9 @@ export default function Contact() {
                       className="block text-sm font-medium text-gray-700 mb-1"
                     >
                       Phone Number{" "}
-                      <span className="text-gray-400 font-normal">(Optional)</span>
+                      <span className="text-gray-400 font-normal">
+                        (Optional)
+                      </span>
                     </label>
                     <input
                       type="tel"
@@ -245,7 +252,6 @@ export default function Contact() {
                 </form>
               )}
             </div>
-
           </div>
         </div>
       </main>
