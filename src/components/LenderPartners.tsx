@@ -5,27 +5,27 @@ export default function LenderPartners() {
   const partners = [
     {
       name: "dyna",
-      logo: "/images/dyna.png",
+      logo: "/images/dyna.jpg",
     },
     {
       name: "Prospa",
-      logo: "/images/prospa.png",
+      logo: "/images/prospa.jpg",
     },
     {
       name: "Lumi",
-      logo: "/images/lumi.png",
+      logo: "/images/lumi.jpg",
     },
     {
-      name: "prospa",
-      logo: "/images/prospa.png",
+      name: "Banjo",
+      logo: "/images/banjo.png",
     },
     {
       name: "moneytech",
-      logo: "/images/moneytech.png",
+      logo: "/images/moneytech.jpg",
     },
     {
       name: "shift",
-      logo: "/images/shift.png",
+      logo: "/images/shift.jpg",
     },
   ];
 
@@ -51,7 +51,7 @@ export default function LenderPartners() {
               <Image
                 src={partner.logo}
                 alt={`${partner.name} logo`}
-                width={150}
+                width={130}
                 height={100}
                 className="object-contain max-h-24"
                 priority
