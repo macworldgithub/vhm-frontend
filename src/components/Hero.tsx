@@ -99,7 +99,7 @@ export default function Hero() {
             {/* Stat 1 */}
             <div className="flex flex-col">
               <span className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                $5K–$500K
+                5k -$2m
               </span>
               <span className="text-xs sm:text-sm text-slate-900 font-bold mt-0.5">
                 Loan Range
