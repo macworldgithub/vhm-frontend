@@ -307,7 +307,7 @@ export default function Application() {
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-[#111827]">
-                    Craig to supply wording
+                    About Your Business
                   </label>
                   <textarea
                     rows={5}
