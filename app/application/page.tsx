@@ -15,9 +15,13 @@ import {
   CreditCard,
   FileText,
   ShieldCheck,
+  Loader2,
 } from "lucide-react";
 import TalkToSomeone from "@/src/components/TalkToSomeone";
 import UnsavedChangesModal from "@/src/components/UnsavedChangesModal";
+
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL || "https://www.abn.omnisuiteai.com";
 
 export default function Application() {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -46,6 +50,8 @@ export default function Application() {
   const [privacyConsent, setPrivacyConsent] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitError, setSubmitError] = useState<string>("");
   const [error, setError] = useState("");
   const [businessData, setBusinessData] = useState<any>(null);
   const [showUnsavedModal, setShowUnsavedModal] = useState<boolean>(false);
@@ -79,8 +85,6 @@ export default function Application() {
     { id: 1, title: "Business", icon: Briefcase },
     { id: 2, title: "Directors", icon: Users },
     { id: 3, title: "Funding", icon: CreditCard },
-    // { id: 4, title: "Documents", icon: FileText },
-    // { id: 5, title: "Privacy", icon: ShieldCheck },
     { id: 6, title: "Submit", icon: Send },
   ];
 
@@ -110,19 +114,16 @@ export default function Application() {
         return "";
       }
     };
-
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [hasUnsavedChanges, shouldExitApp]);
 
-  // Handle back button
   useEffect(() => {
     const handlePopState = () => {
       if (hasUnsavedChanges && !shouldExitApp) {
         setShowUnsavedModal(true);
       }
     };
-
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, [hasUnsavedChanges, shouldExitApp]);
@@ -144,11 +145,7 @@ export default function Application() {
       setVerified(false);
 
       const cleanAbn = abn.replace(/\s/g, "");
-
-      const response = await fetch(
-        `https://www.abn.omnisuiteai.com/api/abn/${cleanAbn}/json`,
-      );
-
+      const response = await fetch(`${API_BASE}/api/abn/${cleanAbn}/json`);
       const result = await response.json();
 
       if (!response.ok || !result.success) {
@@ -164,6 +161,63 @@ export default function Application() {
       setLoading(false);
     }
   };
+
+  // ─── Submit application to backend ──────────────────────────────────────────
+  const handleSubmitApplication = async () => {
+    setSubmitLoading(true);
+    setSubmitError("");
+
+    try {
+      const payload = {
+        // Business
+        abn,
+        businessName: businessData?.EntityName || "",
+        entityType: businessData?.EntityTypeName || "",
+        abnStatus: businessData?.AbnStatus || "",
+        gst: businessData?.Gst ?? false,
+        background,
+        // Directors
+        directors: directors.map((d) => ({
+          salutation: d.salutation,
+          firstName: d.firstName,
+          lastName: d.lastName,
+          middleName: d.middleName,
+          dob: d.dob,
+          email: d.email,
+          phone: d.phone,
+        })),
+        // Funding
+        loanAmount,
+        fundPurpose,
+        fundDetails,
+        contactEmail,
+        contactPhone,
+        // Docs (optional)
+        bankLink,
+        idFileName,
+        privacyConsent,
+      };
+
+      const response = await fetch(`${API_BASE}/api/application`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        throw new Error(result?.message || "Failed to submit application.");
+      }
+
+      setSubmitted(true);
+    } catch (err: any) {
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
   const formatCurrency = (val: string) => {
     if (!val) return "-";
     const n = Number(String(val).replace(/[^0-9.-]+/g, ""));
@@ -192,6 +246,7 @@ export default function Application() {
 
       <main className="px-4 py-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl">
+          {/* Step Progress */}
           <div className="mb-10 overflow-x-auto">
             <div className="flex min-w-175 items-center justify-between">
               {steps.map((step, index) => {
@@ -200,12 +255,20 @@ export default function Application() {
                   <div key={step.id} className="flex flex-1 items-center">
                     <div className="flex flex-col items-center">
                       <div
-                        className={`flex h-14 w-14 items-center justify-center rounded-full border-4 transition-all duration-300 ${step.id === currentStep ? "border-[#02335C] bg-[#02335C] text-white" : "border-[#ececec] bg-[#f3f4f6] text-[#9ca3af]"}`}
+                        className={`flex h-14 w-14 items-center justify-center rounded-full border-4 transition-all duration-300 ${
+                          step.id === currentStep
+                            ? "border-[#02335C] bg-[#02335C] text-white"
+                            : "border-[#ececec] bg-[#f3f4f6] text-[#9ca3af]"
+                        }`}
                       >
                         <Icon size={22} />
                       </div>
                       <p
-                        className={`mt-2 text-sm font-medium ${step.id === currentStep ? "text-[#02335C]" : "text-[#9ca3af]"}`}
+                        className={`mt-2 text-sm font-medium ${
+                          step.id === currentStep
+                            ? "text-[#02335C]"
+                            : "text-[#9ca3af]"
+                        }`}
                       >
                         {step.title}
                       </p>
@@ -220,6 +283,7 @@ export default function Application() {
           </div>
 
           <div className="rounded-[28px] border border-[#e5e7eb] bg-white p-5 shadow-sm sm:p-8 lg:p-10">
+            {/* ─── Step 1: Business ─────────────────────────────────────────── */}
             {currentStep === 1 && (
               <>
                 <div className="mb-8">
@@ -234,7 +298,6 @@ export default function Application() {
                   <label className="mb-2 block text-sm font-semibold text-[#111827]">
                     Australian Business Number (ABN)
                   </label>
-
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <input
                       type="text"
@@ -243,18 +306,19 @@ export default function Application() {
                       placeholder="e.g. 51 824 753 556"
                       className="h-12 w-full rounded-xl border border-[#d1d5db] px-4 text-sm text-[#111827] outline-none transition placeholder:text-[#9ca3af] focus:border-[#02335C] focus:ring-4 focus:ring-[#02335C]/10"
                     />
-
                     <button
                       onClick={handleVerify}
                       disabled={loading}
-                      className="flex h-12 min-w-30 items-center justify-center gap-2 rounded-xl bg-[#02335C] px-5 text-sm font-semibold text-white"
+                      className="flex h-12 min-w-30 items-center justify-center gap-2 rounded-xl bg-[#02335C] px-5 text-sm font-semibold text-white disabled:opacity-60"
                     >
-                      <Search size={18} />
+                      {loading ? (
+                        <Loader2 size={18} className="animate-spin" />
+                      ) : (
+                        <Search size={18} />
+                      )}
                       {loading ? "Verifying..." : "Verify"}
                     </button>
                   </div>
-
-                  {/* Error Message */}
                   {error && (
                     <p className="mt-2 text-sm text-red-600">{error}</p>
                   )}
@@ -274,7 +338,7 @@ export default function Application() {
                           Business Name
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.EntityName}{" "}
+                          {businessData?.EntityName}
                         </div>
                       </div>
                       <div>
@@ -282,7 +346,7 @@ export default function Application() {
                           Entity Type
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.EntityTypeName}{" "}
+                          {businessData?.EntityTypeName}
                         </div>
                       </div>
                       <div>
@@ -290,7 +354,7 @@ export default function Application() {
                           Status
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.AbnStatus}{" "}
+                          {businessData?.AbnStatus}
                         </div>
                       </div>
                       <div>
@@ -298,7 +362,7 @@ export default function Application() {
                           GST Registered
                         </p>
                         <div className="rounded-xl border border-[#d1d5db] bg-white px-4 py-3 text-sm font-medium text-[#111827]">
-                          {businessData?.Gst ? "Yes" : "No"}{" "}
+                          {businessData?.Gst ? "Yes" : "No"}
                         </div>
                       </div>
                     </div>
@@ -320,6 +384,7 @@ export default function Application() {
               </>
             )}
 
+            {/* ─── Step 2: Directors ────────────────────────────────────────── */}
             {currentStep === 2 && (
               <div className="my-8">
                 <h2 className="mb-4 text-xl font-semibold text-[#0f172a]">
@@ -345,7 +410,7 @@ export default function Application() {
                                 e.target.value,
                               )
                             }
-                            className="w-full rounded-md border border-[#d1d5db] px-3 py-2 text-sm text-[#111827] placeholder:text-[#9ca3af]"
+                            className="w-full rounded-md border border-[#d1d5db] px-3 py-2 text-sm text-[#111827]"
                           >
                             <option value="Mr">Mr</option>
                             <option value="Mrs">Mrs</option>
@@ -445,7 +510,7 @@ export default function Application() {
                             placeholder="04xx xxx xxx"
                           />
                         </div>
-                        <div className="flex gap-2 justify-end">
+                        <div className="flex justify-end gap-2">
                           {directors.length > 1 && (
                             <button
                               onClick={() => removeDirector(doc.id)}
@@ -459,18 +524,17 @@ export default function Application() {
                     </div>
                   ))}
 
-                  <div>
-                    <button
-                      onClick={addDirector}
-                      className="w-full rounded-md border border-dashed border-[#d1d5db] px-4 py-3 text-sm text-[#02365c] transition hover:border-[#02365c] hover:bg-[#f0f4f8]"
-                    >
-                      + Add Another Director
-                    </button>
-                  </div>
+                  <button
+                    onClick={addDirector}
+                    className="w-full rounded-md border border-dashed border-[#d1d5db] px-4 py-3 text-sm text-[#02365c] transition hover:border-[#02365c] hover:bg-[#f0f4f8]"
+                  >
+                    + Add Another Director
+                  </button>
                 </div>
               </div>
             )}
 
+            {/* ─── Step 3: Funding ──────────────────────────────────────────── */}
             {currentStep === 3 && (
               <div className="my-8">
                 <h2 className="mb-4 text-xl font-semibold text-[#0f172a]">
@@ -549,111 +613,7 @@ export default function Application() {
               </div>
             )}
 
-            {false && currentStep === 4 && (
-              <div className="my-8">
-                <h2 className="mb-4 text-xl font-semibold text-[#0f172a]">
-                  Supporting Documents
-                </h2>
-                <div className="space-y-4">
-                  <div className="rounded-md border border-[#e6f2ef] bg-[#e2f0f5] p-4 text-sm text-[#02335C]">
-                    <strong>Bank Statement Options</strong>
-                    <p className="mt-1 text-xs text-[#02335C]">
-                      You can provide read-only access via a bank statement
-                      aggregator or upload statements directly.
-                    </p>
-                  </div>
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-[#64748b]">
-                      Bank Statement Link (Optional)
-                    </label>
-                    <input
-                      value={bankLink}
-                      onChange={(e) => setBankLink(e.target.value)}
-                      placeholder="Paste your bank statement aggregator link here..."
-                      className="w-full rounded-xl border border-[#d1d5db] px-4 py-2 text-sm text-[#111827] outline-none placeholder:text-[#9ca3af]"
-                    />
-                    <p className="mt-1 text-xs text-[#9ca3af]">
-                      If using Illion, Credit Sense, or similar services
-                    </p>
-                  </div>
-                  <div>
-                    <label className="mb-1 block text-sm font-medium text-[#64748b]">
-                      Identification Document
-                    </label>
-                    <label className="mt-2 flex h-28 w-full cursor-pointer items-center justify-center rounded-xl border-2 border-dashed border-[#e6e6e6] bg-white text-sm text-[#9ca3af]">
-                      <input
-                        type="file"
-                        accept=".pdf,.jpg,.jpeg,.png"
-                        onChange={(e) =>
-                          setIdFileName(e.target.files?.[0]?.name || "")
-                        }
-                        className="hidden"
-                      />
-                      {idFileName
-                        ? idFileName
-                        : "Click to upload driver's licence or passport (PDF, JPG, PNG)"}
-                    </label>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {false && currentStep === 5 && (
-              <div className="my-8">
-                <h2 className="mb-4 text-xl font-semibold text-[#0f172a]">
-                  Privacy & Consent
-                </h2>
-                <div className="rounded-md border border-[#e5e7eb] bg-white p-4">
-                  <div className="h-40 overflow-y-auto text-sm text-[#374151]">
-                    <p className="font-semibold">
-                      Privacy Collection Statement
-                    </p>
-                    <p className="mt-2">
-                      KREDO Finance Partners Pty Ltd collects your personal
-                      information for the purpose of assessing your eligibility
-                      for unsecured business finance products from our panel of
-                      lenders.
-                    </p>
-                    <ul className="mt-2 list-disc pl-4">
-                      <li>
-                        Collecting and verifying your personal and business
-                        information
-                      </li>
-                      <li>
-                        Conducting credit checks and identity verification
-                      </li>
-                      <li>
-                        Sharing your application with selected lenders on our
-                        panel
-                      </li>
-                      <li>
-                        Receiving communications regarding your application
-                        status
-                      </li>
-                    </ul>
-                  </div>
-                  <label className="mt-4 flex items-start gap-3 rounded-md border border-[#f1f5f4] bg-[#ffffff] p-4">
-                    <input
-                      type="checkbox"
-                      checked={privacyConsent}
-                      onChange={(e) => setPrivacyConsent(e.target.checked)}
-                    />
-                    <div>
-                      <div className="text-sm font-medium text-gray-600">
-                        I have read and agree to the Privacy Collection
-                        Statement
-                      </div>
-                      <div className="text-xs text-[#9ca3af]">
-                        I consent to KREDO Finance Partners collecting, using,
-                        and disclosing my personal information as described
-                        above.
-                      </div>
-                    </div>
-                  </label>
-                </div>
-              </div>
-            )}
-
+            {/* ─── Step 6: Review & Submit ──────────────────────────────────── */}
             {submitted ? (
               <div className="my-8">
                 <div className="mb-8 text-center">
@@ -674,48 +634,35 @@ export default function Application() {
                       What Happens Next?
                     </h3>
                     <div className="space-y-4">
-                      <div className="flex gap-4">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#02335C] text-white text-sm font-bold">
-                          1
+                      {[
+                        {
+                          n: 1,
+                          title: "Application Review",
+                          desc: "Our team will review your application within 24-48 hours.",
+                        },
+                        {
+                          n: 2,
+                          title: "Lender Matching",
+                          desc: "We'll match you with the best lender from our panel based on your needs.",
+                        },
+                        {
+                          n: 3,
+                          title: "Offer & Funding",
+                          desc: "Receive and accept your offer. Funds can be transferred within 24 hours.",
+                        },
+                      ].map(({ n, title, desc }) => (
+                        <div key={n} className="flex gap-4">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#02335C] text-sm font-bold text-white">
+                            {n}
+                          </div>
+                          <div>
+                            <p className="font-medium text-[#111827]">
+                              {title}
+                            </p>
+                            <p className="text-sm text-[#64748b]">{desc}</p>
+                          </div>
                         </div>
-                        <div>
-                          <p className="font-medium text-[#111827]">
-                            Application Review
-                          </p>
-                          <p className="text-sm text-[#64748b]">
-                            Our team will review your application within 24-48
-                            hours.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-4">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#02335C] text-white text-sm font-bold">
-                          2
-                        </div>
-                        <div>
-                          <p className="font-medium text-[#111827]">
-                            Lender Matching
-                          </p>
-                          <p className="text-sm text-[#64748b]">
-                            We'll match you with the best lender from our panel
-                            based on your needs.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex gap-4">
-                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#02335C] text-white text-sm font-bold">
-                          3
-                        </div>
-                        <div>
-                          <p className="font-medium text-[#111827]">
-                            Offer & Funding
-                          </p>
-                          <p className="text-sm text-[#64748b]">
-                            Receive and accept your offer. Funds can be
-                            transferred within 24 hours.
-                          </p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
                   </div>
 
@@ -759,11 +706,12 @@ export default function Application() {
                     Review your application details before submitting.
                   </p>
                   <div className="space-y-6">
+                    {/* Business */}
                     <div className="rounded-xl border border-[#e8eef0] bg-white p-6">
-                      <h3 className="font-medium text-sm text-[#374151] mb-3">
+                      <h3 className="mb-3 text-sm font-medium text-[#374151]">
                         Business Details
                       </h3>
-                      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 text-sm text-[#374151]">
+                      <div className="grid grid-cols-1 gap-2 text-sm text-[#374151] md:grid-cols-2">
                         <div>
                           <div className="mb-1">
                             <span className="font-medium">ABN:</span>{" "}
@@ -789,14 +737,15 @@ export default function Application() {
                       </div>
                     </div>
 
+                    {/* Directors */}
                     <div className="rounded-xl border border-[#e8eef0] bg-white p-6">
-                      <h3 className="font-medium text-sm text-[#374151] mb-3">
+                      <h3 className="mb-3 text-sm font-medium text-[#374151]">
                         Directors
                       </h3>
                       <div className="text-sm text-[#374151]">
                         {directors.map((d) => (
                           <div key={d.id} className="mb-2">
-                            {`${d.salutation} ${d.firstName} ${d.lastName}`}{" "}
+                            {`${d.salutation} ${d.firstName} ${d.lastName}`}
                             {d.email && (
                               <span className="ml-2 text-xs text-[#9ca3af]">
                                 ({d.email})
@@ -807,11 +756,12 @@ export default function Application() {
                       </div>
                     </div>
 
+                    {/* Funding */}
                     <div className="rounded-xl border border-[#e8eef0] bg-white p-6">
-                      <h3 className="font-medium text-sm text-[#374151] mb-3">
+                      <h3 className="mb-3 text-sm font-medium text-[#374151]">
                         Funding
                       </h3>
-                      <div className="grid grid-cols-1 gap-2 md:grid-cols-2 text-sm text-[#374151]">
+                      <div className="grid grid-cols-1 gap-2 text-sm text-[#374151] md:grid-cols-2">
                         <div>
                           <div className="mb-1">
                             <span className="font-medium">Amount:</span>{" "}
@@ -855,6 +805,13 @@ export default function Application() {
                         </div>
                       </div>
                     </div>
+
+                    {/* Submit error */}
+                    {submitError && (
+                      <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+                        {submitError}
+                      </div>
+                    )}
                   </div>
                 </div>
               )
@@ -862,6 +819,7 @@ export default function Application() {
 
             <div className="my-8 h-px bg-[#ececec]" />
 
+            {/* Navigation */}
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               {!submitted &&
                 (currentStep === 1 ? (
@@ -885,32 +843,28 @@ export default function Application() {
                 ))}
 
               <button
-                onClick={() => {
-                  if (currentStep < 3) setCurrentStep((s) => s + 1);
-                  else if (currentStep === 3) setCurrentStep(6);
-                  else if (!submitted) {
-                    console.log("submit form", {
-                      abn,
-                      background,
-                      directors,
-                      loanAmount,
-                      fundPurpose,
-                      fundDetails,
-                      contactEmail,
-                      contactPhone,
-                      bankLink,
-                      idFileName,
-                      privacyConsent,
-                    });
-                    setSubmitted(true);
+                disabled={submitLoading}
+                onClick={async () => {
+                  if (currentStep < 3) {
+                    setCurrentStep((s) => s + 1);
+                  } else if (currentStep === 3) {
+                    setCurrentStep(6);
+                  } else if (!submitted) {
+                    // Final submit — call API
+                    await handleSubmitApplication();
                   } else {
                     router.push("/");
                   }
                 }}
-                className="flex items-center justify-center gap-2 rounded-xl bg-[#02335C] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#034a80]"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#02335C] px-7 py-3 text-sm font-semibold text-white transition hover:bg-[#034a80] disabled:opacity-60"
               >
                 {submitted ? (
                   "Back to Home"
+                ) : submitLoading ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Submitting...
+                  </>
                 ) : currentStep === 6 ? (
                   <>
                     <Send size={16} />
@@ -933,10 +887,8 @@ export default function Application() {
         </div>
       </main>
 
-      {/* Talk to Someone Widget */}
       <TalkToSomeone phoneNumber="+61 1234 567 890" />
 
-      {/* Unsaved Changes Modal */}
       <UnsavedChangesModal
         isOpen={showUnsavedModal}
         onClose={() => setShowUnsavedModal(false)}
